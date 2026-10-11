@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sushi Selection</title>
+<style>
+:root{--bg:#fff8f0;--fg:#2a2220;--card:#fff;--line:#e8d9c8;--acc:#d84a3a;--mut:#7a6c64;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1816;--fg:#f4ebe4;--card:#2a2321;--line:#443a36;--acc:#ff6b5a;--mut:#b5a69d}}
+:root[data-theme="dark"]{--bg:#1d1816;--fg:#f4ebe4;--card:#2a2321;--line:#443a36;--acc:#ff6b5a;--mut:#b5a69d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:18px}
+main{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:4px 0 2px}
+.sub{color:var(--mut);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.pic{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px;text-align:center;font:inherit;color:inherit;cursor:pointer}
+.pic:active,.pic:hover{border-color:var(--acc)}
+.pic svg{width:96px;height:96px}
+.pic b{display:block;margin-top:4px}
+.pic small{color:var(--mut)}
+.row{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:8px}
+.row .n{flex:1;display:flex;align-items:center;gap:8px}
+.dot{width:18px;height:18px;border-radius:50%;display:inline-block}
+.yn{border:2px solid var(--line);background:none;color:inherit;font:inherit;border-radius:10px;padding:6px 14px;cursor:pointer}
+.yn.y.on{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+.yn.n.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:14px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;margin-top:8px}
+.btn.g{background:none;color:var(--mut);border:1px solid var(--line)}
+.bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.item{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px;font:inherit;color:inherit;cursor:pointer}
+.item svg{width:64px;height:64px;flex:none}
+.item .jp{font-size:1.1rem;font-weight:700}
+.item .k{color:var(--mut);font-size:.9rem}
+.chip{display:inline-block;font-size:.8rem;border:1px solid var(--line);border-radius:20px;padding:1px 8px;margin:4px 4px 0 0}
+.chip.m{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:9}
+#ov.show{display:flex}
+#box{background:var(--card);border-radius:24px;padding:20px;max-width:360px;width:100%;text-align:center}
+#box svg{width:240px;max-width:100%;height:240px}
+html,body{height:100%}
+main{height:100%;display:flex;flex-direction:column;padding:10px 12px}
+h1{font-size:1.15rem;margin:0 0 6px}
+.q{font-size:.8rem;color:var(--mut);margin:6px 0 4px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pic{padding:6px 2px;border-radius:14px;font-size:.78rem}
+.pic svg{width:100%;max-width:56px;height:auto}
+.pic b{font-size:.8rem;margin-top:2px}
+.pic small{font-size:.68rem;display:block}
+.pic .e{font-size:30px;line-height:56px}
+.pic.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--card))}
+#ing{display:flex;flex-wrap:wrap;gap:6px}
+.ic{border:2px solid var(--line);background:var(--card);color:inherit;font:inherit;font-size:.8rem;border-radius:20px;padding:3px 10px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.ic .dot{width:12px;height:12px}
+.ic.y{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+.ic.n{background:var(--acc);border-color:var(--acc);color:#fff;text-decoration:line-through}
+#res{flex:1;overflow:auto;margin-top:8px;min-height:0}
+.item{padding:6px 8px;margin-bottom:6px;border-radius:12px;gap:10px}
+.item svg{width:44px;height:44px}
+.item .jp{font-size:1rem}
+#ing{display:block}
+#ing .gr{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+#ing .gl{font-size:.7rem;color:var(--mut);margin:2px 0}
+.pic svg{max-width:44px}
+.pic .e{font-size:26px;line-height:44px}
+</style>
+</head>
+<body>
+<main>
+<h1>🍣 Sushi Selection</h1>
+<div class="q">1 · Style</div><div class="g4" id="r1"></div>
+<div class="q">2 · What do you eat?</div><div class="g4" id="r2"></div>
+<div class="q">3 · Ingredients: tap once = yes ✓, twice = no ✗</div><div id="ing"></div>
+<div class="q">Your matches</div><div id="res"></div>
+</main>
+<div id="ov"><div id="box"></div></div>
+<script>
+const FILL={salmon:'#ff8a65',tuna:'#c62828',shrimp:'#ffab91',eel:'#6d4c41',crab:'#f48fb1',egg:'#ffd54f',avocado:'#8bc34a',cucumber:'#43a047',tofu:'#d9a441',chicken:'#e0b070',beef:'#8d4a3a',uni:'#ffb300',ikura:'#ff5722',tobiko:'#ef6c00',tako:'#c9a0c8',ika:'#ece3cf',wakame:'#1b8a5a'};
+const ING=[['salmon','Salmon','fish'],['tuna','Tuna','fish'],['shrimp','Shrimp','fish'],['eel','Eel','fish'],['crab','Crab','fish'],['uni','Sea urchin','fish'],['ikura','Salmon roe','fish'],['tobiko','Flying-fish roe','fish'],['tako','Octopus','fish'],['ika','Squid','fish'],['chicken','Chicken','meat'],['beef','Beef','meat'],['egg','Egg','veg'],['avocado','Avocado','veg'],['cucumber','Cucumber','veg'],['tofu','Tofu','veg'],['wakame','Seaweed','veg']];
+// [kind, name, kanji, english, ingredients, category]
+const S=[
+['maki','Kappa maki','かっぱ巻き','Cucumber roll',['cucumber'],'veg'],
+['maki','Avocado maki','アボカド巻き','Avocado roll',['avocado'],'veg'],
+['maki','Tamago maki','玉子巻き','Egg roll',['egg','cucumber'],'veg'],
+['maki','Tekka maki','鉄火巻き','Tuna roll',['tuna'],'fish'],
+['maki','Sake maki','鮭巻き','Salmon roll',['salmon'],'fish'],
+['maki','Ebi maki','海老巻き','Shrimp roll',['shrimp','cucumber'],'fish'],
+['maki','Katsu maki','カツ巻き','Chicken cutlet roll',['chicken','cucumber'],'meat'],
+['uramaki','Yasai uramaki','野菜ロール','Veggie inside-out roll',['avocado','cucumber'],'veg'],
+['uramaki','Tofu uramaki','豆腐ロール','Tofu inside-out roll',['tofu','avocado'],'veg'],
+['uramaki','California roll','カリフォルニアロール','Crab, avocado, cucumber',['crab','avocado','cucumber'],'fish'],
+['uramaki','Sake avocado roll','サーモンアボカド','Salmon & avocado',['salmon','avocado'],'fish'],
+['uramaki','Spicy tuna roll','スパイシーツナ','Tuna & cucumber',['tuna','cucumber'],'fish'],
+['uramaki','Unagi uramaki','うなぎ巻き','Eel, avocado, cucumber',['eel','avocado','cucumber'],'fish'],
+['uramaki','Ebi tempura roll','海老天ロール','Shrimp tempura roll',['shrimp','avocado'],'fish'],
+['uramaki','Chikin katsu roll','チキンカツロール','Chicken cutlet roll',['chicken','cucumber'],'meat'],
+['uramaki','Gyu avocado roll','牛アボカド','Beef & avocado',['beef','avocado'],'meat'],
+['temaki','Kappa temaki','かっぱ手巻き','Cucumber hand roll',['cucumber','avocado'],'veg'],
+['temaki','Tamago temaki','玉子手巻き','Egg hand roll',['egg','cucumber'],'veg'],
+['temaki','Sake temaki','鮭手巻き','Salmon hand roll',['salmon','avocado'],'fish'],
+['temaki','Tekka temaki','鉄火手巻き','Tuna hand roll',['tuna'],'fish'],
+['temaki','Ebi temaki','海老手巻き','Shrimp hand roll',['shrimp','cucumber'],'fish'],
+['temaki','Katsu temaki','カツ手巻き','Chicken cutlet hand roll',['chicken','cucumber'],'meat'],
+['nigiri','Inari','いなり寿司','Tofu pouch',['tofu'],'veg'],
+['nigiri','Tamago nigiri','玉子握り','Sweet egg',['egg'],'veg'],
+['nigiri','Sake nigiri','サーモン握り','Salmon',['salmon'],'fish'],
+['nigiri','Maguro nigiri','まぐろ握り','Tuna',['tuna'],'fish'],
+['nigiri','Ebi nigiri','海老握り','Shrimp',['shrimp'],'fish'],
+['nigiri','Unagi nigiri','うなぎ握り','Grilled eel',['eel'],'fish'],
+['nigiri','Gyu tataki nigiri','牛たたき握り','Seared beef',['beef'],'meat'],
+['nigiri','Tori nigiri','鶏握り','Grilled chicken',['chicken'],'meat'],
+['maki','Tako kyuri maki','たこきゅうり巻き','Octopus & cucumber',['tako','cucumber'],'fish'],
+['maki','Wakame maki','わかめ巻き','Seaweed salad roll',['wakame','cucumber'],'veg'],
+['uramaki','Tobiko California roll','とびこカリフォルニア','Crab, avocado, flying-fish roe',['crab','avocado','tobiko'],'fish'],
+['futomaki','Futomaki','太巻き','Thick veggie roll',['egg','cucumber','avocado'],'veg'],
+['futomaki','Sake futomaki','鮭太巻き','Thick salmon roll',['salmon','cucumber','avocado'],'fish'],
+['futomaki','Unagi futomaki','うなぎ太巻き','Thick eel roll',['eel','egg','cucumber'],'fish'],
+['futomaki','Katsu futomaki','カツ太巻き','Thick chicken cutlet roll',['chicken','egg','cucumber'],'meat'],
+['temaki','Ikura temaki','いくら手巻き','Salmon roe hand roll',['ikura','cucumber'],'fish'],
+['temaki','Uni temaki','うに手巻き','Sea urchin hand roll',['uni','cucumber'],'fish'],
+['nigiri','Tako nigiri','たこ握り','Octopus',['tako'],'fish'],
+['nigiri','Ika nigiri','いか握り','Squid',['ika'],'fish'],
+['gunkan','Uni gunkan','うに軍艦','Sea urchin',['uni'],'fish'],
+['gunkan','Ikura gunkan','いくら軍艦','Salmon roe',['ikura'],'fish'],
+['gunkan','Tobiko gunkan','とびこ軍艦','Flying-fish roe',['tobiko'],'fish'],
+['gunkan','Kani gunkan','かに軍艦','Crab salad',['crab'],'fish'],
+['gunkan','Wakame gunkan','わかめ軍艦','Seaweed salad',['wakame'],'veg'],
+['sashimi','Sake sashimi','鮭刺身','Salmon slices',['salmon'],'fish'],
+['sashimi','Maguro sashimi','まぐろ刺身','Tuna slices',['tuna'],'fish'],
+['sashimi','Tako sashimi','たこ刺身','Octopus slices',['tako'],'fish'],
+['sashimi','Ika sashimi','いか刺身','Squid slices',['ika'],'fish'],
+['sashimi','Gyu tataki','牛たたき','Seared beef slices',['beef'],'meat'],
+['sashimi','Hiyayakko','冷奴','Cold tofu',['tofu'],'veg'],
+['chirashi','Kaisen chirashi','海鮮ちらし','Mixed seafood on rice',['salmon','tuna','ikura'],'fish'],
+['chirashi','Ikura don','いくら丼','Salmon & roe bowl',['salmon','ikura'],'fish'],
+['chirashi','Unagi don','鰻丼','Eel bowl',['eel'],'fish'],
+['chirashi','Yasai chirashi','野菜ちらし','Veggie bowl',['egg','avocado','cucumber'],'veg'],
+['chirashi','Gyu don','牛丼','Beef bowl',['beef'],'meat'],
+['chirashi','Tori don','鶏丼','Chicken & egg bowl',['chicken','egg'],'meat']
+];
+function svg(kind,ings){
+ const f=ings.map(i=>FILL[i]),n=f.length;
+ const face='<g stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="48" cy="%Y%" r="4" fill="#222"/><circle cx="72" cy="%Y%" r="4" fill="#222"/><path d="M52 %S% q8 7 16 0" fill="none"/></g><g stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"><path d="M52 %S% q8 7 16 0"/></g>';
+ const fc=(y)=>face.replace(/%Y%/g,y).replace(/%S%/g,y+12);
+ let b='';
+ if(kind==='maki'||kind==='futomaki'){b='<circle cx="60" cy="60" r="50" fill="#2b2b2b"/><circle cx="60" cy="60" r="40" fill="#fff"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*20}" cy="46" r="9" fill="${c}"/>`).join('')+fc(68);}
+ else if(kind==='uramaki'){b='<circle cx="60" cy="60" r="50" fill="#fff" stroke="#ddd" stroke-width="2"/>'+[[20,40],[30,22],[90,40],[85,25],[25,85],[95,80],[60,10],[50,108],[75,105]].map(p=>`<circle cx="${p[0]+8}" cy="${p[1]+8}" r="1.8" fill="#555"/>`).join('')+'<circle cx="60" cy="60" r="33" fill="#2b2b2b"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*18}" cy="48" r="8" fill="${c}"/>`).join('')+fc(66);}
+ else if(kind==='temaki'){b='<polygon points="22,28 98,28 60,112" fill="#2b2b2b"/><ellipse cx="60" cy="28" rx="38" ry="8" fill="#fff"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*20}" cy="20" r="10" fill="${c}"/>`).join('')+fc(52);}
+ else if(kind==='gunkan'){b='<rect x="16" y="46" width="88" height="54" rx="20" fill="#2b2b2b"/><ellipse cx="60" cy="48" rx="40" ry="10" fill="#fff"/><ellipse cx="60" cy="42" rx="36" ry="17" fill="'+f[0]+'"/>'+[[40,38],[52,32],[66,34],[78,40],[48,46],[62,44],[72,46],[58,38]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#fff" fill-opacity=".3"/>`).join('')+fc(68);}
+ else if(kind==='sashimi'){b='<ellipse cx="60" cy="90" rx="52" ry="16" fill="#e8e0d8"/>'+[0,1,2].map(i=>`<rect x="${24+i*22}" y="40" width="26" height="46" rx="12" fill="${f[0]}" stroke="#0002" stroke-width="1.5"/>`).join('')+'<circle cx="98" cy="84" r="7" fill="#7cb342"/>'+fc(58);}
+ else if(kind==='chirashi'){b='<path d="M8 56H112Q108 110 60 110Q12 110 8 56Z" fill="#b3372b"/><ellipse cx="60" cy="56" rx="52" ry="11" fill="#fff"/>'+f.map((c,i)=>`<ellipse cx="${60+(i-(n-1)/2)*24}" cy="52" rx="11" ry="9" fill="${c}"/>`).join('')+fc(76);}
+ else {b='<rect x="20" y="58 width="80" height="38" rx="16" fill="#fff" stroke="#ddd" stroke-width="2"/><rect x="12" y="34" width="96" height="36" rx="18" fill="'+f[0]+'"/>'+(ings[0]==='egg'?'<rect x="52" y="34" width="14" height="62" fill="#2b2b2b"/>':'')+fc(48);}
+ return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">${b}</svg>`;
+}
+const st={kind:null,diet:'any',ing:{}};
+const $=id=>document.getElementById(id);
+const KINDS=[['maki','Roll','rice inside',['cucumber']],['uramaki','Roll','rice outside',['avocado']],['futomaki','Thick roll','futomaki',['egg','cucumber','avocado']],['temaki','Hand roll','cone',['tuna']],['nigiri','Nigiri','on rice',['salmon']],['gunkan','Gunkan','roe / uni',['ikura']],['sashimi','Sashimi','no rice',['tuna']],['chirashi','Bowl','on rice',['salmon','ikura','egg']]];
+const DIETS=[['veg','🥒','Veggie'],['fish','🐟','Fish'],['meat','🍗','Meat'],['any','🍽️','Anything']];
+function render(){
+ $('r1').innerHTML=KINDS.map(x=>`<button class="pic ${st.kind===x[0]?'on':''}" onclick="st.kind='${x[0]}';render()">${svg(x[0],x[3])}<b>${x[1]}</b><small>${x[2]}</small></button>`).join('');
+ $('r2').innerHTML=DIETS.map(x=>`<button class="pic ${st.diet===x[0]?'on':''}" onclick="st.diet='${x[0]}';render()"><div class="e">${x[1]}</div><b>${x[2]}</b></button>`).join('');
+ const chip=i=>{const v=st.ing[i[0]];return `<button class="ic ${v===1?'y':v===-1?'n':''}" onclick="tg('${i[0]}')"><span class="dot" style="background:${FILL[i[0]]}"></span>${v===1?'✓ ':v===-1?'✗ ':''}${i[1]}</button>`};
+ const vis=ING.filter(i=>st.diet==='any'||i[2]==='veg'||i[2]===st.diet),A=vis.filter(i=>i[2]!=='veg'),B=vis.filter(i=>i[2]==='veg');
+ $('ing').innerHTML=(A.length?`<div class="gl">Fish &amp; meat</div><div class="gr">${A.map(chip).join('')}</div>`:'')+(B.length?`<div class="gl">Vegetables</div><div class="gr">${B.map(chip).join('')}</div>`:'');
+ $('res').innerHTML=results();
+}
+function tg(k){const v=st.ing[k]||0;st.ing[k]=v===0?1:v===1?-1:0;render()}
+function results(){
+ if(!st.kind)return '<p style="color:var(--mut);margin:4px 0">Pick a style above.</p>';
+ const yes=Object.keys(st.ing).filter(k=>st.ing[k]===1),no=Object.keys(st.ing).filter(k=>st.ing[k]===-1);
+ let r=S.map((x,i)=>({x,i,m:x[4].filter(k=>yes.includes(k)).length})).filter(o=>o.x[0]===st.kind&&(st.diet==='any'||o.x[5]===st.diet)&&!o.x[4].some(k=>no.includes(k))&&(!yes.length||o.m>0));
+ r.sort((a,b)=>b.m-a.m);
+ if(!r.length)return '<p>No match. Change a choice above.</p>';
+ return r.map(o=>`<button class="item" onclick="show(${o.i})">${svg(o.x[0],o.x[4])}<span><span class="jp">${o.x[1]}</span> <span class="k">${o.x[2]}</span><br><span class="k">${o.x[3]}</span></span></button>`).join('');
+}
+function show(i){const x=S[i];$('box').innerHTML=svg(x[0],x[4])+`<h2 style="margin:6px 0 0">${x[1]}</h2><div style="color:var(--mut)">${x[2]}<br>${x[3]}</div><button class="btn" onclick="$('ov').classList.remove('show')">Close</button>`;$('ov').classList.add('show')}
+$('ov').onclick=e=>{if(e.target.id==='ov')$('ov').classList.remove('show')};
+render();
+</script>
+</body>
+</html>

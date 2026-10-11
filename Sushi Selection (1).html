@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sushi Selection</title>
+<style>
+:root{--bg:#fff8f0;--fg:#2a2220;--card:#fff;--line:#e8d9c8;--acc:#d84a3a;--mut:#7a6c64;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1d1816;--fg:#f4ebe4;--card:#2a2321;--line:#443a36;--acc:#ff6b5a;--mut:#b5a69d}}
+:root[data-theme="dark"]{--bg:#1d1816;--fg:#f4ebe4;--card:#2a2321;--line:#443a36;--acc:#ff6b5a;--mut:#b5a69d}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",sans-serif;font-size:18px}
+main{max-width:720px;margin:0 auto;padding:16px}
+h1{font-size:1.4rem;margin:4px 0 2px}
+.sub{color:var(--mut);margin:0 0 16px;font-size:.95rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.pic{background:var(--card);border:2px solid var(--line);border-radius:18px;padding:12px;text-align:center;font:inherit;color:inherit;cursor:pointer}
+.pic:active,.pic:hover{border-color:var(--acc)}
+.pic svg{width:96px;height:96px}
+.pic b{display:block;margin-top:4px}
+.pic small{color:var(--mut)}
+.row{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px;margin-bottom:8px}
+.row .n{flex:1;display:flex;align-items:center;gap:8px}
+.dot{width:18px;height:18px;border-radius:50%;display:inline-block}
+.yn{border:2px solid var(--line);background:none;color:inherit;font:inherit;border-radius:10px;padding:6px 14px;cursor:pointer}
+.yn.y.on{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+.yn.n.on{background:var(--acc);border-color:var(--acc);color:#fff}
+.btn{background:var(--acc);color:#fff;border:0;border-radius:14px;padding:12px 22px;font:inherit;font-weight:600;cursor:pointer;margin-top:8px}
+.btn.g{background:none;color:var(--mut);border:1px solid var(--line)}
+.bar{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+.item{display:flex;gap:12px;align-items:center;width:100%;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:10px;margin-bottom:10px;font:inherit;color:inherit;cursor:pointer}
+.item svg{width:64px;height:64px;flex:none}
+.item .jp{font-size:1.1rem;font-weight:700}
+.item .k{color:var(--mut);font-size:.9rem}
+.chip{display:inline-block;font-size:.8rem;border:1px solid var(--line);border-radius:20px;padding:1px 8px;margin:4px 4px 0 0}
+.chip.m{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+#ov{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;padding:20px;z-index:9}
+#ov.show{display:flex}
+#box{background:var(--card);border-radius:24px;padding:20px;max-width:360px;width:100%;text-align:center}
+#box svg{width:240px;max-width:100%;height:240px}
+html,body{height:100%}
+main{height:100%;display:flex;flex-direction:column;padding:10px 12px}
+h1{font-size:1.15rem;margin:0 0 6px}
+.q{font-size:.8rem;color:var(--mut);margin:6px 0 4px}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.pic{padding:6px 2px;border-radius:14px;font-size:.78rem}
+.pic svg{width:100%;max-width:56px;height:auto}
+.pic b{font-size:.8rem;margin-top:2px}
+.pic small{font-size:.68rem;display:block}
+.pic .e{font-size:30px;line-height:56px}
+.pic.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--card))}
+#ing{display:flex;flex-wrap:wrap;gap:6px}
+.ic{border:2px solid var(--line);background:var(--card);color:inherit;font:inherit;font-size:.8rem;border-radius:20px;padding:3px 10px;cursor:pointer;display:flex;align-items:center;gap:5px}
+.ic .dot{width:12px;height:12px}
+.ic.y{background:#3a9d4a;border-color:#3a9d4a;color:#fff}
+.ic.n{background:var(--acc);border-color:var(--acc);color:#fff;text-decoration:line-through}
+#res{flex:1;overflow:auto;margin-top:8px;min-height:0}
+.item{padding:6px 8px;margin-bottom:6px;border-radius:12px;gap:10px}
+.item svg{width:44px;height:44px}
+.item .jp{font-size:1rem}
+#ing{display:block}
+#ing .gr{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:4px}
+#ing .gl{font-size:.7rem;color:var(--mut);margin:2px 0}
+.pic svg{max-width:44px}
+.pic .e{font-size:26px;line-height:44px}
+.g4{gap:5px}
+.sb{display:flex;align-items:center;gap:4px;padding:3px 5px;min-width:0;border:2px solid var(--line);border-radius:12px;background:var(--card);color:inherit;font:inherit;text-align:left;cursor:pointer;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+.sb svg{width:26px;height:26px;flex:none}
+.sb .em{font-size:18px;flex:none}
+.sb .t{min-width:0;line-height:1.05}
+.sb b{display:block;font-size:.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb small{display:block;font-size:.58rem;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sb.on{border-color:var(--acc);background:color-mix(in srgb,var(--acc) 14%,var(--card))}
+#sel{flex:none}
+#hd{flex:none;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0 3px;margin-top:6px;border-top:1px solid var(--line);cursor:pointer;touch-action:none;user-select:none;-webkit-user-select:none}
+#hd i{display:block;width:44px;height:4px;border-radius:2px;background:var(--mut);opacity:.5}
+#hs{font-size:.75rem;color:var(--mut);max-width:100%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+#res{margin-top:4px}
+</style>
+</head>
+<body>
+<main>
+<h1>🍣 Sushi Selection</h1>
+<div id="sel"><div class="q">1 · Style <span style="opacity:.8">(tap = one, hold = several)</span></div><div class="g4" id="r1"></div>
+<div class="q">2 · What do you eat? <span style="opacity:.8">(hold = several)</span></div><div class="g4" id="r2"></div>
+<div class="q">3 · Ingredients: tap once = yes ✓, twice = no ✗</div><div id="ing"></div>
+</div><div id="hd"><i></i><span id="hs"></span></div><div id="res"></div>
+</main>
+<div id="ov"><div id="box"></div></div>
+<script>
+const FILL={salmon:'#ff8a65',tuna:'#c62828',shrimp:'#ffab91',eel:'#6d4c41',crab:'#f48fb1',egg:'#ffd54f',avocado:'#8bc34a',cucumber:'#43a047',tofu:'#d9a441',chicken:'#e0b070',beef:'#8d4a3a',uni:'#ffb300',ikura:'#ff5722',tobiko:'#ef6c00',tako:'#c9a0c8',ika:'#ece3cf',wakame:'#1b8a5a',imo:'#e8913a',hamachi:'#f6c26b',scallop:'#f3dfc0',saba:'#78909c',anago:'#a1744d',toro:'#e57373',softshell:'#d9822b',cheese:'#fbe9a8',takuan:'#f7d94c',edamame:'#7cb342',pork:'#d98c8c'};
+const ING=[['salmon','Salmon','fish'],['tuna','Tuna','fish'],['shrimp','Shrimp','fish'],['eel','Eel','fish'],['crab','Crab','fish'],['ikura','Salmon roe','fish'],['hamachi','Yellowtail','fish'],['ika','Squid','fish'],['tako','Octopus','fish'],['scallop','Scallop','fish'],['toro','Fatty tuna','fish'],['saba','Mackerel','fish'],['anago','Conger eel','fish'],['tobiko','Flying-fish roe','fish'],['uni','Sea urchin','fish'],['softshell','Soft-shell crab','fish'],['chicken','Chicken','meat'],['beef','Beef','meat'],['pork','Pork','meat'],['avocado','Avocado','veg'],['cucumber','Cucumber','veg'],['egg','Egg','veg'],['tofu','Tofu','veg'],['wakame','Seaweed','veg'],['cheese','Cream cheese','veg'],['takuan','Pickled radish','veg'],['imo','Sweet potato','veg'],['edamame','Edamame','veg']];
+// [kind, name, kanji, english, ingredients, category]
+const S=[
+['maki','Kappa maki','かっぱ巻き','Cucumber roll',['cucumber'],'veg'],
+['maki','Avocado maki','アボカド巻き','Avocado roll',['avocado'],'veg'],
+['maki','Tamago maki','玉子巻き','Egg roll',['egg','cucumber'],'veg'],
+['maki','Tekka maki','鉄火巻き','Tuna roll',['tuna'],'fish'],
+['maki','Sake maki','鮭巻き','Salmon roll',['salmon'],'fish'],
+['maki','Ebi maki','海老巻き','Shrimp roll',['shrimp','cucumber'],'fish'],
+['maki','Katsu maki','カツ巻き','Chicken cutlet roll',['chicken','cucumber'],'meat'],
+['uramaki','Yasai uramaki','野菜ロール','Veggie inside-out roll',['avocado','cucumber'],'veg'],
+['uramaki','Tofu uramaki','豆腐ロール','Tofu inside-out roll',['tofu','avocado'],'veg'],
+['uramaki','California roll','カリフォルニアロール','Crab, avocado, cucumber',['crab','avocado','cucumber'],'fish'],
+['uramaki','Sake avocado roll','サーモンアボカド','Salmon & avocado',['salmon','avocado'],'fish'],
+['uramaki','Spicy tuna roll','スパイシーツナ','Tuna & cucumber',['tuna','cucumber'],'fish'],
+['uramaki','Unagi uramaki','うなぎ巻き','Eel, avocado, cucumber',['eel','avocado','cucumber'],'fish'],
+['uramaki','Ebi tempura roll','海老天ロール','Shrimp tempura roll',['shrimp','avocado'],'fish'],
+['uramaki','Chikin katsu roll','チキンカツロール','Chicken cutlet roll',['chicken','cucumber'],'meat'],
+['uramaki','Gyu avocado roll','牛アボカド','Beef & avocado',['beef','avocado'],'meat'],
+['temaki','Kappa temaki','かっぱ手巻き','Cucumber hand roll',['cucumber','avocado'],'veg'],
+['temaki','Tamago temaki','玉子手巻き','Egg hand roll',['egg','cucumber'],'veg'],
+['temaki','Sake temaki','鮭手巻き','Salmon hand roll',['salmon','avocado'],'fish'],
+['temaki','Tekka temaki','鉄火手巻き','Tuna hand roll',['tuna'],'fish'],
+['temaki','Ebi temaki','海老手巻き','Shrimp hand roll',['shrimp','cucumber'],'fish'],
+['temaki','Katsu temaki','カツ手巻き','Chicken cutlet hand roll',['chicken','cucumber'],'meat'],
+['inari','Inari','いなり寿司','Tofu pouch',['tofu'],'veg'],
+['nigiri','Tamago nigiri','玉子握り','Sweet egg',['egg'],'veg'],
+['nigiri','Sake nigiri','サーモン握り','Salmon',['salmon'],'fish'],
+['nigiri','Maguro nigiri','まぐろ握り','Tuna',['tuna'],'fish'],
+['nigiri','Ebi nigiri','海老握り','Shrimp',['shrimp'],'fish'],
+['nigiri','Unagi nigiri','うなぎ握り','Grilled eel',['eel'],'fish'],
+['nigiri','Gyu tataki nigiri','牛たたき握り','Seared beef',['beef'],'meat'],
+['nigiri','Tori nigiri','鶏握り','Grilled chicken',['chicken'],'meat'],
+['maki','Tako kyuri maki','たこきゅうり巻き','Octopus & cucumber',['tako','cucumber'],'fish'],
+['maki','Wakame maki','わかめ巻き','Seaweed salad roll',['wakame','cucumber'],'veg'],
+['uramaki','Tobiko California roll','とびこカリフォルニア','Crab, avocado, flying-fish roe',['crab','avocado','tobiko'],'fish'],
+['futomaki','Futomaki','太巻き','Thick veggie roll',['egg','cucumber','avocado'],'veg'],
+['futomaki','Sake futomaki','鮭太巻き','Thick salmon roll',['salmon','cucumber','avocado'],'fish'],
+['futomaki','Unagi futomaki','うなぎ太巻き','Thick eel roll',['eel','egg','cucumber'],'fish'],
+['futomaki','Katsu futomaki','カツ太巻き','Thick chicken cutlet roll',['chicken','egg','cucumber'],'meat'],
+['temaki','Ikura temaki','いくら手巻き','Salmon roe hand roll',['ikura','cucumber'],'fish'],
+['temaki','Uni temaki','うに手巻き','Sea urchin hand roll',['uni','cucumber'],'fish'],
+['nigiri','Tako nigiri','たこ握り','Octopus',['tako'],'fish'],
+['nigiri','Ika nigiri','いか握り','Squid',['ika'],'fish'],
+['gunkan','Uni gunkan','うに軍艦','Sea urchin',['uni'],'fish'],
+['gunkan','Ikura gunkan','いくら軍艦','Salmon roe',['ikura'],'fish'],
+['gunkan','Tobiko gunkan','とびこ軍艦','Flying-fish roe',['tobiko'],'fish'],
+['gunkan','Kani gunkan','かに軍艦','Crab salad',['crab'],'fish'],
+['gunkan','Wakame gunkan','わかめ軍艦','Seaweed salad',['wakame'],'veg'],
+['sashimi','Sake sashimi','鮭刺身','Salmon slices',['salmon'],'fish'],
+['sashimi','Maguro sashimi','まぐろ刺身','Tuna slices',['tuna'],'fish'],
+['sashimi','Tako sashimi','たこ刺身','Octopus slices',['tako'],'fish'],
+['sashimi','Ika sashimi','いか刺身','Squid slices',['ika'],'fish'],
+['sashimi','Gyu tataki','牛たたき','Seared beef slices',['beef'],'meat'],
+['sashimi','Hiyayakko','冷奴','Cold tofu',['tofu'],'veg'],
+['chirashi','Kaisen chirashi','海鮮ちらし','Mixed seafood on rice',['salmon','tuna','ikura'],'fish'],
+['chirashi','Ikura don','いくら丼','Salmon & roe bowl',['salmon','ikura'],'fish'],
+['chirashi','Unagi don','鰻丼','Eel bowl',['eel'],'fish'],
+['chirashi','Yasai chirashi','野菜ちらし','Veggie bowl',['egg','avocado','cucumber'],'veg'],
+['chirashi','Gyu don','牛丼','Beef bowl',['beef'],'meat'],
+['chirashi','Tori don','鶏丼','Chicken & egg bowl',['chicken','egg'],'meat'],
+['oshizushi','Sake oshizushi','鮭押し寿司','Pressed salmon',['salmon'],'fish'],
+['oshizushi','Ebi oshizushi','海老押し寿司','Pressed shrimp',['shrimp'],'fish'],
+['oshizushi','Unagi oshizushi','鰻押し寿司','Pressed eel',['eel'],'fish'],
+['oshizushi','Kani oshizushi','蟹押し寿司','Pressed crab',['crab'],'fish'],
+['oshizushi','Tamago oshizushi','玉子押し寿司','Pressed sweet egg',['egg'],'veg'],
+['oshizushi','Avocado oshizushi','アボカド押し寿司','Pressed avocado',['avocado'],'veg'],
+['oshizushi','Tori oshizushi','鶏押し寿司','Pressed chicken',['chicken'],'meat'],
+['inari','Tamago inari','玉子いなり','Egg in tofu pouch',['tofu','egg'],'veg'],
+['inari','Ebi inari','海老いなり','Shrimp in tofu pouch',['tofu','shrimp'],'fish'],
+['inari','Ikura inari','いくらいなり','Salmon roe in tofu pouch',['tofu','ikura'],'fish'],
+['temari','Sake temari','鮭手毬','Salmon rice ball',['salmon'],'fish'],
+['temari','Maguro temari','まぐろ手毬','Tuna rice ball',['tuna'],'fish'],
+['temari','Ebi temari','海老手毬','Shrimp rice ball',['shrimp'],'fish'],
+['temari','Ikura temari','いくら手毬','Salmon roe rice ball',['ikura'],'fish'],
+['temari','Tamago temari','玉子手毬','Egg rice ball',['egg'],'veg'],
+['temari','Avocado temari','アボカド手毬','Avocado rice ball',['avocado'],'veg'],
+['tempura','Ebi tempura','海老天ぷら','Fried shrimp',['shrimp'],'fish'],
+['tempura','Ika tempura','いか天ぷら','Fried squid',['ika'],'fish'],
+['tempura','Kani tempura','蟹天ぷら','Fried crab',['crab'],'fish'],
+['tempura','Imo tempura','さつまいも天ぷら','Fried sweet potato',['imo'],'veg'],
+['tempura','Avocado tempura','アボカド天ぷら','Fried avocado',['avocado'],'veg'],
+['tempura','Agedashi tofu','揚げ出し豆腐','Fried tofu in broth',['tofu'],'veg'],
+['tempura','Tori ten','鶏天','Fried chicken',['chicken'],'meat'],
+['soup','Miso shiru','味噌汁','Miso soup',['tofu','wakame'],'veg'],
+['soup','Tamago suupu','玉子スープ','Egg drop soup',['egg'],'veg'],
+['soup','Sake ushio-jiru','鮭の潮汁','Salmon clear soup',['salmon'],'fish'],
+['soup','Kani jiru','蟹汁','Crab miso soup',['crab'],'fish'],
+['soup','Ebi sumashi','海老のすまし汁','Shrimp clear soup',['shrimp'],'fish'],
+['soup','Tori sumashi','鶏のすまし汁','Chicken clear soup',['chicken'],'meat'],
+['soup','Gyu jiru','牛汁','Beef miso soup',['beef'],'meat'],
+['maki','Negitoro maki','ねぎとろ巻き','Fatty tuna roll',['toro'],'fish'],
+['maki','Oshinko maki','お新香巻き','Pickled radish roll',['takuan'],'veg'],
+['uramaki','Philadelphia roll','フィラデルフィアロール','Salmon, cream cheese, cucumber',['salmon','cheese','cucumber'],'fish'],
+['uramaki','Dragon roll','ドラゴンロール','Eel & shrimp tempura, avocado',['eel','shrimp','avocado'],'fish'],
+['uramaki','Rainbow roll','レインボーロール','Crab roll topped with fish',['crab','salmon','tuna','avocado'],'fish'],
+['uramaki','Spider roll','スパイダーロール','Soft-shell crab roll',['softshell','cucumber','avocado'],'fish'],
+['uramaki','Alaska roll','アラスカロール','Salmon, avocado, cucumber',['salmon','avocado','cucumber'],'fish'],
+['uramaki','Spicy salmon roll','スパイシーサーモン','Spicy salmon & cucumber',['salmon','cucumber'],'fish'],
+['uramaki','Tuna avocado roll','ツナアボカド','Tuna & avocado',['tuna','avocado'],'fish'],
+['temaki','Negitoro temaki','ねぎとろ手巻き','Fatty tuna hand roll',['toro'],'fish'],
+['temaki','Spicy tuna temaki','スパイシーツナ手巻き','Spicy tuna hand roll',['tuna','cucumber'],'fish'],
+['nigiri','Hamachi nigiri','はまち握り','Yellowtail',['hamachi'],'fish'],
+['nigiri','Hotate nigiri','ほたて握り','Scallop',['scallop'],'fish'],
+['nigiri','Saba nigiri','さば握り','Mackerel',['saba'],'fish'],
+['nigiri','Anago nigiri','あなご握り','Conger eel',['anago'],'fish'],
+['nigiri','Otoro nigiri','大とろ握り','Fatty tuna',['toro'],'fish'],
+['nigiri','Amaebi nigiri','甘海老握り','Sweet shrimp',['shrimp'],'fish'],
+['nigiri','Aburi sake nigiri','炙りサーモン握り','Seared salmon',['salmon'],'fish'],
+['gunkan','Negitoro gunkan','ねぎとろ軍艦','Fatty tuna',['toro'],'fish'],
+['gunkan','Tuna mayo gunkan','ツナマヨ軍艦','Tuna & mayo',['tuna'],'fish'],
+['sashimi','Hamachi sashimi','はまち刺身','Yellowtail slices',['hamachi'],'fish'],
+['sashimi','Hotate sashimi','ほたて刺身','Scallop slices',['scallop'],'fish'],
+['sashimi','Sashimi moriawase','刺身盛り合わせ','Mixed sashimi',['salmon','tuna','hamachi'],'fish'],
+['chirashi','Tekka don','鉄火丼','Tuna bowl',['tuna'],'fish'],
+['chirashi','Sake don','鮭丼','Salmon bowl',['salmon'],'fish'],
+['tempura','Softshell tempura','ソフトシェルクラブ天','Fried soft-shell crab',['softshell'],'fish'],
+['side','Edamame','枝豆','Salted soybeans',['edamame'],'veg'],
+['side','Wakame salad','わかめサラダ','Seaweed salad',['wakame'],'veg'],
+['side','Gyoza','餃子','Pan-fried dumplings',['pork'],'meat'],
+['side','Karaage','唐揚げ','Japanese fried chicken',['chicken'],'meat'],
+['side','Chicken teriyaki','照り焼きチキン','Teriyaki chicken',['chicken'],'meat'],
+['side','Sake teriyaki','鮭の照り焼き','Teriyaki salmon',['salmon'],'fish']
+];
+function svg(kind,ings){
+ const f=ings.map(i=>FILL[i]),n=f.length;
+ const face='<g stroke="#fff" stroke-width="3" stroke-linecap="round"><circle cx="48" cy="%Y%" r="4" fill="#222"/><circle cx="72" cy="%Y%" r="4" fill="#222"/><path d="M52 %S% q8 7 16 0" fill="none"/></g><g stroke="#222" stroke-width="2" fill="none" stroke-linecap="round"><path d="M52 %S% q8 7 16 0"/></g>';
+ const fc=(y)=>face.replace(/%Y%/g,y).replace(/%S%/g,y+12);
+ let b='';
+ if(kind==='maki'||kind==='futomaki'){b='<circle cx="60" cy="60" r="50" fill="#2b2b2b"/><circle cx="60" cy="60" r="40" fill="#fff"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*20}" cy="46" r="9" fill="${c}"/>`).join('')+fc(68);}
+ else if(kind==='uramaki'){b='<circle cx="60" cy="60" r="50" fill="#fff" stroke="#ddd" stroke-width="2"/>'+[[20,40],[30,22],[90,40],[85,25],[25,85],[95,80],[60,10],[50,108],[75,105]].map(p=>`<circle cx="${p[0]+8}" cy="${p[1]+8}" r="1.8" fill="#555"/>`).join('')+'<circle cx="60" cy="60" r="33" fill="#2b2b2b"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*18}" cy="48" r="8" fill="${c}"/>`).join('')+fc(66);}
+ else if(kind==='temaki'){b='<polygon points="22,28 98,28 60,112" fill="#2b2b2b"/><ellipse cx="60" cy="28" rx="38" ry="8" fill="#fff"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*20}" cy="20" r="10" fill="${c}"/>`).join('')+fc(52);}
+ else if(kind==='side'){b='<ellipse cx="60" cy="88" rx="54" ry="18" fill="#e8e0d8"/><ellipse cx="60" cy="84" rx="42" ry="12" fill="#fff"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*24}" cy="60" r="14" fill="${c}"/>`).join('')+fc(66);}
+ else if(kind==='oshizushi'){b='<rect x="12" y="52" width="96" height="40" rx="8" fill="#fff" stroke="#ddd" stroke-width="2"/><rect x="12" y="36" width="96" height="22" rx="8" fill="'+f[0]+'"/><rect x="24" y="36" width="10" height="56" fill="#2b2b2b" fill-opacity=".85"/>'+fc(66);}
+ else if(kind==='inari'){const tp=f.find(c=>c!==FILL.tofu)||'#e9e2d0';b='<path d="M14 92Q12 54 60 46Q108 54 106 92Q60 102 14 92Z" fill="#c8782a"/><ellipse cx="60" cy="50" rx="34" ry="11" fill="#fff"/><ellipse cx="60" cy="47" rx="16" ry="6" fill="'+tp+'"/>'+fc(72);}
+ else if(kind==='temari'){b='<circle cx="60" cy="66" r="42" fill="#fff" stroke="#ddd" stroke-width="2"/><ellipse cx="60" cy="40" rx="30" ry="15" fill="'+f[0]+'"/><circle cx="60" cy="38" r="3" fill="#fff" fill-opacity=".4"/>'+fc(70);}
+ else if(kind==='tempura'){b='<g transform="rotate(-18 60 64)"><ellipse cx="54" cy="64" rx="42" ry="24" fill="#e5a93d"/><path d="M92 64l18-14v10l-2 4 2 4v10z" fill="'+f[0]+'"/></g>'+[[34,52],[52,46],[70,56],[44,76],[66,80]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="2.5" fill="#b8791c"/>`).join('')+fc(64);}
+ else if(kind==='soup'){b='<path d="M10 56H110Q106 108 60 108Q14 108 10 56Z" fill="#8e2a22"/><ellipse cx="60" cy="56" rx="50" ry="11" fill="#c8944a"/>'+f.map((c,i)=>`<circle cx="${60+(i-(n-1)/2)*22}" cy="55" r="7" fill="${c}"/>`).join('')+'<g fill="none" stroke="#999" stroke-width="3" stroke-linecap="round"><path d="M44 40q-6-8 0-16q6-8 0-14"/><path d="M62 40q-6-8 0-16q6-8 0-14"/><path d="M80 40q-6-8 0-16q6-8 0-14"/></g>'+fc(80);}
+ else if(kind==='gunkan'){b='<rect x="16" y="46" width="88" height="54" rx="20" fill="#2b2b2b"/><ellipse cx="60" cy="48" rx="40" ry="10" fill="#fff"/><ellipse cx="60" cy="42" rx="36" ry="17" fill="'+f[0]+'"/>'+[[40,38],[52,32],[66,34],[78,40],[48,46],[62,44],[72,46],[58,38]].map(p=>`<circle cx="${p[0]}" cy="${p[1]}" r="4.5" fill="#fff" fill-opacity=".3"/>`).join('')+fc(68);}
+ else if(kind==='sashimi'){b='<ellipse cx="60" cy="90" rx="52" ry="16" fill="#e8e0d8"/>'+[0,1,2].map(i=>`<rect x="${24+i*22}" y="40" width="26" height="46" rx="12" fill="${f[0]}" stroke="#0002" stroke-width="1.5"/>`).join('')+'<circle cx="98" cy="84" r="7" fill="#7cb342"/>'+fc(58);}
+ else if(kind==='chirashi'){b='<path d="M8 56H112Q108 110 60 110Q12 110 8 56Z" fill="#b3372b"/><ellipse cx="60" cy="56" rx="52" ry="11" fill="#fff"/>'+f.map((c,i)=>`<ellipse cx="${60+(i-(n-1)/2)*24}" cy="52" rx="11" ry="9" fill="${c}"/>`).join('')+fc(76);}
+ else {b='<rect x="20" y="58 width="80" height="38" rx="16" fill="#fff" stroke="#ddd" stroke-width="2"/><rect x="12" y="34" width="96" height="36" rx="18" fill="'+f[0]+'"/>'+(ings[0]==='egg'?'<rect x="52" y="34" width="14" height="62" fill="#2b2b2b"/>':'')+fc(48);}
+ return `<svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">${b}</svg>`;
+}
+const st={kinds:[],diets:[],ing:{},col:false};
+const $=id=>document.getElementById(id);
+const KINDS=[['nigiri','Nigiri','on rice',['salmon']],['maki','Roll','rice in',['cucumber']],['uramaki','Roll','rice out',['avocado']],['temaki','Hand roll','cone',['tuna']],['sashimi','Sashimi','no rice',['tuna']],['gunkan','Gunkan','roe/uni',['ikura']],['futomaki','Thick roll','futomaki',['egg','cucumber','avocado']],['chirashi','Bowl','on rice',['salmon','ikura','egg']],['inari','Inari','tofu',['tofu','ikura']],['temari','Temari','rice ball',['tuna']],['oshizushi','Pressed','box',['salmon']],['tempura','Tempura','fried',['shrimp']],['soup','Soup','warm',['tofu','wakame']],['side','Sides','extras',['edamame']]];
+const KN={maki:'Roll in',uramaki:'Roll out',futomaki:'Thick roll',temaki:'Hand roll',nigiri:'Nigiri',gunkan:'Gunkan',sashimi:'Sashimi',chirashi:'Bowl',oshizushi:'Pressed',inari:'Inari',temari:'Temari',tempura:'Tempura',soup:'Soup',side:'Sides'};
+const DIETS=[['any','🍽️','Anything'],['fish','🐟','Fish'],['meat','🍗','Meat'],['veg','🥒','Veggie']];
+const POP=['Sake nigiri','California roll','Maguro nigiri','Sake avocado roll','Spicy tuna roll','Ebi tempura roll','Kappa maki','Philadelphia roll','Dragon roll','Tekka maki','Sake maki','Ebi nigiri','Tamago nigiri','Ikura gunkan','Sake sashimi','Maguro sashimi','Miso shiru','Ebi tempura','Edamame','Gyoza','Chicken teriyaki','Rainbow roll','Alaska roll','Avocado maki','Unagi nigiri','Hamachi nigiri','Ika nigiri','Tako nigiri','Hotate nigiri','Uni gunkan','Negitoro gunkan','Spider roll','Futomaki','Inari','Kaisen chirashi','Sashimi moriawase','Tori ten','Karaage','Wakame salad','Imo tempura','Avocado tempura','Chikin katsu roll','Sake temaki','Tekka temaki','Spicy salmon roll','Tuna avocado roll','Kani gunkan','Sake teriyaki','Aburi sake nigiri'];
+const KI=KINDS.map(k=>k[0]),rk=n=>{const i=POP.indexOf(n);return i<0?999:i};
+const pick=(a,v,m)=>m?(a.includes(v)?a.filter(x=>x!==v):[...a,v]):(a.length===1&&a[0]===v?[]:[v]);
+const avail=(k,d)=>S.map((x,i)=>({x,i})).filter(o=>(!k.length||k.includes(o.x[0]))&&(!d.length||d.includes(o.x[5])));
+function bindLP(el,fn){let t=null,sx=0,sy=0;
+ const cancel=()=>{if(t){clearTimeout(t);t=null}};
+ el.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-v]');if(!b)return;sx=e.clientX;sy=e.clientY;cancel();t=setTimeout(()=>{t=null;try{navigator.vibrate&&navigator.vibrate(15)}catch(_){}fn(b.dataset.v,true)},450)});
+ el.addEventListener('pointermove',e=>{if(t&&(Math.abs(e.clientX-sx)>10||Math.abs(e.clientY-sy)>10))cancel()});
+ el.addEventListener('pointerup',e=>{if(t){cancel();const b=e.target.closest('[data-v]');if(b)fn(b.dataset.v,false)}});
+ el.addEventListener('pointercancel',cancel);
+ el.addEventListener('click',e=>{if(e.detail===0){const b=e.target.closest('[data-v]');if(b)fn(b.dataset.v,false)}});
+ el.addEventListener('contextmenu',e=>e.preventDefault());}
+function render(){
+ const dv=DIETS.filter(d=>d[0]==='any'||avail(st.kinds,[]).some(o=>o.x[5]===d[0]));
+ st.diets=st.diets.filter(d=>dv.some(x=>x[0]===d));
+ const av=avail(st.kinds,st.diets),vis=ING.filter(i=>av.some(o=>o.x[4].includes(i[0])));
+ Object.keys(st.ing).forEach(k=>{if(!vis.some(i=>i[0]===k))delete st.ing[k]});
+ $('r1').innerHTML=KINDS.map(x=>`<button class="sb ${st.kinds.includes(x[0])?'on':''}" data-v="${x[0]}">${svg(x[0],x[3])}<span class="t"><b>${x[1]}</b><small>${x[2]}</small></span></button>`).join('');
+ $('r2').innerHTML=dv.map(x=>`<button class="sb ${(x[0]==='any'?!st.diets.length:st.diets.includes(x[0]))?'on':''}" data-v="${x[0]}"><span class="em">${x[1]}</span><span class="t"><b>${x[2]}</b></span></button>`).join('');
+ const chip=i=>{const v=st.ing[i[0]];return `<button class="ic ${v===1?'y':v===-1?'n':''}" onclick="tg('${i[0]}')"><span class="dot" style="background:${FILL[i[0]]}"></span>${v===1?'✓ ':v===-1?'✗ ':''}${i[1]}</button>`};
+ const A=vis.filter(i=>i[2]!=='veg'),B=vis.filter(i=>i[2]==='veg');
+ $('ing').innerHTML=(A.length?`<div class="gl">Fish &amp; meat</div><div class="gr">${A.map(chip).join('')}</div>`:'')+(B.length?`<div class="gl">Vegetables</div><div class="gr">${B.map(chip).join('')}</div>`:'');
+ $('res').innerHTML=results(av);
+ $('sel').style.display=st.col?'none':'block';
+ const sc=st.kinds.length+st.diets.length+Object.keys(st.ing).filter(k=>st.ing[k]).length;
+ $('hs').textContent=st.col?`▼ ${st.n} dishes · ${summary()}`:`▲ ${st.n} dishes${sc?' · '+sc+' selected':''} · swipe up to hide`;
+}
+function tg(k){const v=st.ing[k]||0;st.ing[k]=v===0?1:v===1?-1:0;render()}
+function results(av){
+ const yes=Object.keys(st.ing).filter(k=>st.ing[k]===1),no=Object.keys(st.ing).filter(k=>st.ing[k]===-1);
+ const r=av.map(o=>({...o,m:o.x[4].filter(k=>yes.includes(k)).length})).filter(o=>!o.x[4].some(k=>no.includes(k))&&(!yes.length||o.m>0));
+ r.sort((a,b)=>b.m-a.m||rk(a.x[1])-rk(b.x[1])||KI.indexOf(a.x[0])-KI.indexOf(b.x[0])||a.i-b.i);st.n=r.length;
+ if(!r.length)return '<p>No match. Change a choice above.</p>';
+ return r.map(o=>`<button class="item" onclick="show(${o.i})">${svg(o.x[0],o.x[4])}<span><span class="jp">${o.x[1]}</span> <span class="k">${o.x[2]}</span><br><span class="k">${o.x[3]}${st.kinds.length===1?'':' · '+KN[o.x[0]]}</span></span></button>`).join('');
+}
+function show(i){const x=S[i];$('box').innerHTML=svg(x[0],x[4])+`<h2 style="margin:6px 0 0">${x[1]}</h2><div style="color:var(--mut)">${x[2]}<br>${x[3]}</div><div class="bar" style="justify-content:center"><a class="btn" style="text-decoration:none" target="_blank" rel="noopener" href="https://www.google.com/search?tbm=isch&q=${encodeURIComponent(x[1]+' '+x[2]+' Japanese food')}">📷 Real photos</a><button class="btn g" onclick="$('ov').classList.remove('show')">Close</button></div>`;$('ov').classList.add('show')}
+bindLP($('r1'),(v,m)=>{st.kinds=pick(st.kinds,v,m);render()});
+bindLP($('r2'),(v,m)=>{st.diets=v==='any'?[]:pick(st.diets,v,m);render()});
+const summary=()=>{const p=[...st.kinds.map(k=>KN[k]),...st.diets.map(d=>({veg:'Veggie',fish:'Fish',meat:'Meat'}[d])),...Object.keys(st.ing).filter(k=>st.ing[k]).map(k=>(st.ing[k]>0?'✓ ':'✗ ')+ING.find(i=>i[0]===k)[1])];return p.length?p.join(' · '):'Everything'};
+const setCol=v=>{if(st.col!==v){st.col=v;render()}};
+function swipe(el,fn){let x0=0,y0=0,s0=0;
+ el.addEventListener('touchstart',e=>{const t=e.touches[0];x0=t.clientX;y0=t.clientY;s0=el.scrollTop},{passive:true});
+ el.addEventListener('touchend',e=>{const t=e.changedTouches[0],dx=t.clientX-x0,dy=t.clientY-y0;if(Math.abs(dy)>40&&Math.abs(dy)>Math.abs(dx)*1.5)fn(dy<0?'up':'down',s0)},{passive:true});}
+swipe($('sel'),d=>{if(d==='up')setCol(true)});
+swipe($('hd'),d=>setCol(d==='up'));
+swipe($('res'),(d,s0)=>{const r=$('res');if(d==='down'&&s0===0)setCol(false);if(d==='up'&&r.scrollHeight<=r.clientHeight+1)setCol(true)});
+$('hd').onclick=()=>setCol(!st.col);
+$('ov').onclick=e=>{if(e.target.id==='ov')$('ov').classList.remove('show')};
+render();
+</script>
+</body>
+</html>
