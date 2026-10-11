@@ -1,0 +1,36 @@
+{
+  "id": "./",
+  "name": "Sushi Selection",
+  "short_name": "Sushi",
+  "description": "Pick your sushi: choose a style, what you eat and your ingredients.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#fff8f0",
+  "theme_color": "#d84a3a",
+  "lang": "en",
+  "categories": [
+    "food"
+  ],
+  "icons": [
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
